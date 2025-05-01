@@ -1,49 +1,45 @@
-from registrocod import Registro
-
-
+from registro import Registro
+from manipulação_dados.ler_dados import Ler_dados
+#AQUI EU ABRO O BANCO DE DADOS 
+from utilidades.contador_senha import contador_erro_senha
 banco_usuarios = {}
-erros = 0
-def contador_erro_senha():
-    global erros
-    erros += 1
-    print('Senha incorreta!')
-    if erros >= 3:
-        print('Sua conta foi bloqueada momentaneamente.')
 
-# Verificação de email
-def verifica_email(email):
-    return email in banco_usuarios
-
-# Verificação de senha
-def verifica_senha(email, senha):
-    return banco_usuarios.get(email) == senha
-
-# Cadastro
-def dados_cadastro():
-    print('Conta não cadastrada. Vamos criar uma.')
-    nome = input('Nome: ')
-    email = input('Email: ')
-    senha = input('Senha: ')
-    novo_usuario = Registro(nome, email, senha)
-    banco_usuarios[email] = senha
-    print(f'Usuário {nome} cadastrado com sucesso!')
-
-
-
-
+def retorna():
+    return True 
+def retorna2():
+    return False
 
 class LogIn:
-    def __init__(self):
-        email = input("Digite seu email: ")#compara com o banco de cadastros 
-        if verifica_email(email) is True:
-            senha = input("Digite sua senha: ")
-            if verifica_senha(email, senha) is True:
+
+    def cadastrar(self):
+        print('Conta não cadastrada. Vamos criar uma.')
+        nome = input('Nome: ')
+        email = input('Email: ')
+        senha = input('Senha: ')
+        novo_usuario = Registro(nome, email, senha)
+
+    def __init__(self,email,senha):
+       # email = input("Digite seu email: ")#compara com o banco de cadastros 
+        self.email=email
+        if Ler_dados.ler_email(self.email) is True:
+            #senha = input("Digite sua senha: ")
+            self.senha=senha
+            if Ler_dados.ler_senha(self.senha) is True:
                 print("Login bem-sucedido!")
+               # retorna()
+
             else:
                 contador_erro_senha()
-                self.__init__()
+                #self.__init__()
+                print('Senha errada')
+                #retorna2()
         else:
-            dados_cadastro()
-            self.__init__()  # Tenta logar novamente após cadastro
+            print('Senha errada')
+            #retorna2()
+           #self.cadastrar()
+           # self.__init__()  # Tenta logar novamente após cadastro
+      
+    
+      
 
 # Início do sistema
